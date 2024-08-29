@@ -98,5 +98,4 @@ function playRound(humanChoice, computerChoice) {
             break;
     }
 }
-
 playGame()

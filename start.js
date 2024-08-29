@@ -1,0 +1,1 @@
+confirm("Start Game?")
