@@ -1,17 +1,17 @@
 function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * max) + 1;
 }
 
 let choice = choice => {
-    if(choice === 0)
+    if(choice === 1)
         return "Rock";
-    else if(choice === 1)
+    else if(choice === 2)
         return "Paper";
-    else if(choice == 2)
+    else if(choice == 3)
         return "Scissors";
     else
     {
-        console.log("Please try again. Input 0, 1, or 2 to choose Rock, Paper, or Scissors.");
+        console.log("Please try again. Input 1, 2, or 3 to choose Rock, Paper, or Scissors.");
         return getHumanChoice();
     }
 };
@@ -22,7 +22,7 @@ let getComputerChoice = () => {
 };
 
 let getHumanChoice = () => {
-    let num = parseInt(prompt("Type 0, 1, or 2 to select: 'Rock', 'Paper', or 'Scissors' respectively."))
+    let num = parseInt(prompt("Type 1, 2, or 3 to select: 'Rock', 'Paper', or 'Scissors' respectively."))
     return choice(num);
 };
 
@@ -77,8 +77,8 @@ function playRound(humanChoice, computerChoice) {
             else if(computerChoice === "Scissors")
             {
                 computerScore += 1;
-                console.log("%cWith one swift slice the Scissors sliced the Paper in half! \
-                    The clean-up crew is getting paid overtime tonight... YOU LOSE!", "color: pink;")
+                console.log("%cWith one swift slice the Scissors cut the Paper in half! \
+                \nThe clean-up crew is getting paid overtime tonight... YOU LOSE!", "color: pink;")
             }
             break;
         case "Scissors":
@@ -92,8 +92,8 @@ function playRound(humanChoice, computerChoice) {
             else if(computerChoice === "Paper")
             {
                 humanScore += 1;
-                console.log("%cWith one swift slice the Scissors sliced the Paper in half! \
-                    The clean-up crew is getting paid overtime tonight... YOU LOSE!", "color: green;")
+                console.log("%cWith one swift slice the Scissors cut the Paper in half! \
+                \nThe clean-up crew is getting paid overtime tonight... YOU LOSE!", "color: green;")
             }
             break;
     }
