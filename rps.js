@@ -28,74 +28,147 @@ let getHumanChoice = () => {
 
 let computerScore = 0, humanScore = 0;
 
-function playGame()
-{
-    for(let i = 1; i < 6; i++)
-    {
-        console.log(`ROUND ${i}`)
-        const playerChoice = getHumanChoice();
-        const cpuChoice = getComputerChoice()
-        console.log("Player: " + playerChoice);
-        console.log("Computer: " + cpuChoice);
-        playRound(playerChoice, cpuChoice);
-        console.log(
-        `---THE SCORE---\n PLAYER: ${humanScore}\n CPU:    ${computerScore}`
-        )
-    }
-    if(humanScore > computerScore)
-        console.log("YOU WIN!");
+//If I want just one flavorText at a time
+// const flavorText = document.querySelector(".flavorText");
+// const pText = document.createElement("p");
+
+const score = document.querySelector(".score");
+const pScore = document.createElement("p");
+const cScore = document.createElement("p");
+
+let updateScore = () => {
+    pScore.textContent = `PLAYER: ${humanScore}`;
+    cScore.textContent = `CPU: ${computerScore}`;
+
+    score.appendChild(pScore);
+    score.appendChild(cScore);
+};
+
+let newGame = document.querySelector(".newGame");
+let toggleNewGame = () => {
+    if(newGame.disabled)
+        newGame.disabled = false;
     else
-        console.log("YOU LOSE!");
-    
+        newGame.disabled = true;
+}
+newGame.addEventListener("click", () => {
+    const playerOptions = document.querySelectorAll(".rpsBtn");
+    playerOptions.forEach(option => {
+        option.disabled = false;
+    });
+    toggleNewGame()
+    humanScore = 0, computerScore = 0;
+    updateScore();
+
+    const flavorText = document.querySelector(".flavorText");
+    while (flavorText.firstChild) {
+        flavorText.removeChild(flavorText.firstChild);
+    }
+})
+newGame.disabled = true;
+
+updateScore();
+
+function playGame()
+{     
+    const playerOptions = document.querySelectorAll(".rpsBtn");
+    playerOptions.forEach(option => {
+        option.addEventListener("click", () => {
+            playRound(option.textContent, getComputerChoice());
+        })
+    });
 }
 
 function playRound(humanChoice, computerChoice) {
+
+    //Keep if Game History is desired.   
+    const flavorText = document.querySelector(".flavorText");
+    const pText = document.createElement("p");
+    pText.textContent = "";
+    flavorText.appendChild(pText);
+
     switch(humanChoice)
     {
         case "Rock":
             if(computerChoice === "Rock")
-                console.log("%cIts Rock vs. Rock! WE HAVE A TIE!!!", "color: yellow;");
+            {
+                pText.textContent = "Its Rock vs. Rock! WE HAVE A TIE!!!"
+                pText.setAttribute("style", "color: orange");
+            }
             else if(computerChoice === "Paper")
             {
                 computerScore += 1;
-                console.log("%cThe Paper envelops the Rock in a suffocating hold! YOU LOSE!", "color: pink;")
+                pText.textContent = "The Paper envelops the Rock in a suffocating hold! YOU LOSE!";
+                pText.setAttribute("style", "color: pink");
             }
             else if(computerChoice === "Scissors")
             {
                 humanScore += 1;
-                console.log("%cThe Rock delivers critical hits to the Scissors' mechanism... SPLITTING IT IN TWO! YOU WIN!", "color: green;")
+                pText.textContent = "The Rock delivers critical hits to the Scissors' mechanism... SPLITTING IT IN TWO! YOU WIN!";
+                pText.setAttribute("style", "color: green");
             }
             break;
         case "Paper":
             if(computerChoice === "Paper")
-                console.log("%cIts Paper vs. Paper! They're just looking at one another... Menacingly. WE HAVE A TIE!!!", "color: yellow;");
+            {
+                pText.textContent = "Its Paper vs. Paper! They're just looking at one another... Menacingly. WE HAVE A TIE!!!";
+                pText.setAttribute("style", "color: orange");
+            }
             else if(computerChoice === "Rock")
             {
                 humanScore += 1;
-                console.log("%cThe Paper envelops the Rock in a suffocating hold! YOU WIN!", "color: green;")
+                pText.textContent = "The Paper envelops the Rock in a suffocating hold! YOU WIN!";
+                pText.setAttribute("style", "color: green");
             }
             else if(computerChoice === "Scissors")
             {
                 computerScore += 1;
-                console.log("%cWith one swift slice the Scissors cut the Paper in half! \
-                \nThe clean-up crew is getting paid overtime tonight... YOU LOSE!", "color: pink;")
+                pText.textContent = "With one swift slice the Scissors cut the Paper in half! \
+                \nThe clean-up crew is getting paid overtime tonight... YOU LOSE!";
+                pText.setAttribute("style", "color: pink");
             }
             break;
         case "Scissors":
             if(computerChoice === "Scissors")
-                console.log("%cIts Scissors vs. Scissors! CUT THE TV FEED! WE HAVE A TIE!!!", "color: yellow;");
+            {
+                pText.textContent = "Its Scissors vs. Scissors! CUT THE TV FEED! WE HAVE A TIE!!!";
+                pText.setAttribute("style", "color: orange");
+            }
             else if(computerChoice === "Rock")
             {
                 computerScore += 1;
-                console.log("%cThe Rock delivers critical hits to the Scissors' mechanism... SPLITTING IT IN TWO! YOU LOSE!", "color: pink;")
+                pText.textContent = "The Rock delivers critical hits to the Scissors' mechanism... SPLITTING IT IN TWO! YOU LOSE!";
+                pText.setAttribute("style", "color: pink");
             }
             else if(computerChoice === "Paper")
             {
                 humanScore += 1;
-                console.log("%cWith one swift slice the Scissors cut the Paper in half! \
-                \nThe clean-up crew is getting paid overtime tonight... YOU LOSE!", "color: green;")
+                pText.textContent = "With one swift slice the Scissors cut the Paper in half! \
+                \nThe clean-up crew is getting paid overtime tonight... YOU LOSE!";
+                pText.setAttribute("style", "color: green");
             }
             break;
+    }
+
+    updateScore();
+
+    if(humanScore === 5 || computerScore === 5)
+    {
+        const playerOptions = document.querySelectorAll(".rpsBtn");
+        playerOptions.forEach(option => {
+            option.disabled = true;
+        });
+        if(humanScore > computerScore)
+        {
+            pText.textContent = "YOU WIN!";
+            flavorText.appendChild(pText);
+        }
+        else
+        {
+            pText.textContent = "YOU LOSE!";
+            flavorText.appendChild(pText);
+        }
+        toggleNewGame();
     }
 }
 playGame()
